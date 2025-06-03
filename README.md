@@ -6,7 +6,7 @@ Aplikasi web sederhana untuk membuat tabel berisi deret Fibonacci sesuai jumlah 
 
 ## Screenshot
 
-[Tampilan Generator Tabel Fibonacci](Screenshot 2025-06-03 at 14.51.57.png)
+![Tampilan Generator Tabel Fibonacci](Screenshot%202025-06-03%20at%2014.51.57.png)
 
 ---
 
