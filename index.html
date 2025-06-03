@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Tabel Fibonacci</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom styles for better visual appeal if needed */
+        .fib-table th, .fib-table td {
+            border: 1px solid #e2e8f0; /* Tailwind gray-300 */
+            padding: 0.75rem; /* p-3 */
+            text-align: center;
+        }
+        .fib-table th {
+            background-color: #f1f5f9; /* Tailwind slate-100 */
+        }
+        /* Ensure table is scrollable on small screens if it overflows */
+        .table-container {
+            max-width: 100%;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="container mx-auto bg-white p-6 sm:p-8 rounded-xl shadow-xl w-full max-w-2xl">
+        <h1 class="text-2xl sm:text-3xl font-bold text-center text-sky-600 mb-6">Generator Tabel Fibonacci</h1>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <div>
+                <label for="rows" class="block text-sm font-medium text-slate-700 mb-1">Jumlah Baris:</label>
+                <input type="number" id="rows" name="rows" value="6" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500">
+            </div>
+            <div>
+                <label for="cols" class="block text-sm font-medium text-slate-700 mb-1">Jumlah Kolom:</label>
+                <input type="number" id="cols" name="cols" value="6" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500">
+            </div>
+        </div>
+
+        <button id="generateBtn" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-semibold py-2.5 px-4 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-opacity-75 transition duration-150 ease-in-out mb-6">
+            Buat Tabel
+        </button>
+
+        <div id="messageArea" class="text-red-500 text-sm mb-4"></div>
+        
+        <div class="table-container">
+            <table id="fibonacciTable" class="min-w-full fib-table rounded-lg overflow-hidden">
+                </table>
+        </div>
+    </div>
+
+    <script>
+        const rowsInput = document.getElementById('rows');
+        const colsInput = document.getElementById('cols');
+        const generateBtn = document.getElementById('generateBtn');
+        const fibonacciTable = document.getElementById('fibonacciTable');
+        const messageArea = document.getElementById('messageArea');
+
+        // Function to generate Fibonacci sequence
+        function generateFibonacci(count) {
+            if (count <= 0) return [];
+            if (count === 1) return [0];
+
+            let sequence = [0, 1];
+            // Handle cases where count might be less than 2 after initialization
+            if (count === 2) return sequence;
+
+
+            for (let i = 2; i < count; i++) {
+                sequence.push(sequence[i - 1] + sequence[i - 2]);
+            }
+            return sequence.slice(0, count); // Ensure exactly 'count' numbers
+        }
+
+        // Function to display the table
+        function displayTable() {
+            messageArea.textContent = ''; // Clear previous messages
+            const rows = parseInt(rowsInput.value);
+            const cols = parseInt(colsInput.value);
+
+            if (isNaN(rows) || isNaN(cols) || rows <= 0 || cols <= 0) {
+                messageArea.textContent = 'Jumlah baris dan kolom harus berupa angka positif.';
+                fibonacciTable.innerHTML = ''; // Clear table
+                return;
+            }
+            
+            if (rows > 100 || cols > 100) { // Limit to prevent performance issues
+                 messageArea.textContent = 'Untuk alasan performa, jumlah baris dan kolom dibatasi hingga 100.';
+                 fibonacciTable.innerHTML = ''; // Clear table
+                 return;
+            }
+
+
+            const totalNumbers = rows * cols;
+            const fibSequence = generateFibonacci(totalNumbers);
+
+            let tableHTML = '<thead><tr class="bg-slate-200">';
+            // Creating header based on number of columns, e.g., Kolom 1, Kolom 2, ...
+            for (let j = 0; j < cols; j++) {
+                tableHTML += `<th class="p-2 border border-slate-300">Kolom ${j + 1}</th>`;
+            }
+            tableHTML += '</tr></thead><tbody>';
+
+            let numberIndex = 0;
+            for (let i = 0; i < rows; i++) {
+                tableHTML += '<tr>';
+                for (let j = 0; j < cols; j++) {
+                    if (numberIndex < fibSequence.length) {
+                        tableHTML += `<td class="p-2 border border-slate-300">${fibSequence[numberIndex]}</td>`;
+                        numberIndex++;
+                    } else {
+                        tableHTML += `<td class="p-2 border border-slate-300">-</td>`; // Placeholder if not enough numbers (should not happen with correct fibSequence length)
+                    }
+                }
+                tableHTML += '</tr>';
+            }
+            tableHTML += '</tbody>';
+
+            fibonacciTable.innerHTML = tableHTML;
+        }
+
+        generateBtn.addEventListener('click', displayTable);
+
+        // Initial display with default values
+        displayTable();
+    </script>
+
+</body>
+</html>
