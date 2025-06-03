@@ -4,6 +4,12 @@ Aplikasi web sederhana untuk membuat tabel berisi deret Fibonacci sesuai jumlah 
 
 ---
 
+## Screenshot
+
+![Tampilan Generator Tabel Fibonacci](Screenshot 2025-06-03 at 14.51.57.png)
+
+---
+
 ## Fitur
 
 - Input jumlah baris dan kolom untuk tabel Fibonacci.
